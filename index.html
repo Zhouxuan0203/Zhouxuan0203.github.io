@@ -16,15 +16,12 @@
             padding: 10px;
             margin: 10px;
             border-radius: 10px;
-            background-color: aliceblue;
             width: clamp(200px, 50vw, 400px);
             height: 400px;
             display: flex;
             justify-content: center;
             align-items: center;
             float: left;
-            background: var(--url) 35%;
-            background-size: cover;
         }
 
         .button {
@@ -39,7 +36,8 @@
 
 <body>
     <div id="app">
-        <div class="box" v-for="box_index in box_item.length" :style='"--url:" + box_item[box_index-1].back_url'>
+        <!-- <button @click="test">test</button> -->
+        <div class="box" v-for="box_index in box_item.length" :style='{"background": box_item[box_index-1].background}'>
             <a :href='box_item[box_index-1].url' class="button">{{box_item[box_index-1].text}}</a>
         </div>
     </div>
@@ -48,6 +46,10 @@
 <script src="./js/vue.js"></script>
 <script>
     const range = function* (start, stop, step = 1) {
+        if (!stop) {
+            stop = start;
+            start = 0;
+        }
         if (step == 0) {
             return;
         }
@@ -67,10 +69,9 @@
         el: '#app',
         data() {
             return {
-                // box_item_count: 4,
                 box_item: [
-                    { text: '电影搜索 / 外卖红包', back_url: 'url(./img/background/film.webp)', url: 'https://i69.top/o2GF' },
-                    { text: '#' },
+                    { text: '电影搜索 / 外卖红包', background: 'url(./img/background/film.webp) 35% center / cover', url: 'https://i69.top/o2GF' },
+                    { text: '文本处理', background: 'aliceblue', url: './text_processing.html' },
                 ],
             }
         },
@@ -84,8 +85,18 @@
             //     console.log(i, v);
             // }
         },
+        mounted() {
+            // const boxs = document.querySelectorAll('.box');
+            // for (let i of range(boxs.length)) {
+            //     // if (this.box_item[i].background) {
+            //     //     boxs[i].setAttribute('style', '--url: ' + this.box_item[i].background);
+            //     // }
+            // }
+        },
         methods: {
+            // test() {
 
+            // }
         },
     });
 </script>

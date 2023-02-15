@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本处理-时间轴换行消除</title>
+</head>
+
+<body>
+    <div id="app">
+        <p>示例</p>
+        <p>00:00<br>XXXXX => 00:00 XXXXX</p>
+        <input type="file" @change="handleFileSelect" ref="fileInput">
+        <button @click="downloadFile">下载</button>
+        <!-- <button @click="test">test</button> -->
+    </div>
+</body>
+
+<script src="./js/vue.js"></script>
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            fileContent: '',
+        },
+        methods: {
+            // test() {
+            //     console.log('a', this.fileContent);
+            // },
+            handleFileSelect(event) {
+                const file = event.target.files[0];
+                const fileReader = new FileReader();
+                fileReader.onload = () => {
+                    let content = fileReader.result;
+                    content = content.replace(/(\d+:\d+)\s+(\S+)/g, '$1 $2');
+                    this.fileContent = content;
+                };
+                fileReader.readAsText(file);
+            },
+            downloadFile() {
+                const blob = new Blob([this.fileContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = 'example.txt';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+            },
+        }
+    });
+</script>
+
+</html>
